@@ -32,6 +32,17 @@ pub fn add(a: usize, b: usize) -> usize {
     a + b
 }
 ```
+Add the following line in the cargo.toml file
+```toml
+[dependencies]
+wasm-bindgen = "*"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+```
+A dynamic system library will be produced. This is used when compiling a dynamic library
+to be loaded from another language. This output type will create 
+*.so files on Linux, *.dylib files on macOS, and *.dll files on Windows.
 
 While we could compile this to a WebAssembly binary using cargo, this won't give us the JavaScript glue code we need. For that we could use the `wasm-bindgen` cli tool that reads the WebAssembly binary and produces JavaScript glue code that we can use to call the WebAssembly code. However, this is a multistep process, and we can have a tool do all these steps for us: `wasm-pack`.
 
@@ -73,6 +84,9 @@ If we access the `index.html` file through the web server, we'll finally see our
 ## Exercises
 
 1.) Try to remove as much code as possible from the generated index.js and keep the example working. See if you can explain why the piece of code you removed is safe to remove.
+
 2.) Look at the call to the WebAssembly binary - what does the call like? Do you notice anything interesting about what's done with the return value. Why might that be?
+
 3.) The wasm-pack tool helps us build our WebAssembly binary, the JavaScript glue code, and even TypeScript bindings. While convenient, we don't _need_ to use wasm-pack. Try to find out how to recreate a working example without using wasm-pack. Hint: you should only need the [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen) cli tool installed.
+
 4.) Play with passing more complex types like Strings, Vectors and references to such types to the function. Inspect the JavaScript and see if you can make sense of what's going on.
